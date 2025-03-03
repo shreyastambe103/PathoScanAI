@@ -1,6 +1,26 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import type { AnalysisResult } from "@shared/schema";
+
+interface AnalysisResult {
+  _id: string;
+  imageUrl: string;
+  results: {
+    e_coli: number;
+    klebsiella: number;
+    acinetobacter: number;
+    pseudomonas: number;
+    enterobacter: number;
+  };
+  confidence: {
+    e_coli: number;
+    klebsiella: number;
+    acinetobacter: number;
+    pseudomonas: number;
+    enterobacter: number;
+  };
+  notes?: string;
+  timestamp: string;
+}
 
 interface Props {
   result: AnalysisResult;

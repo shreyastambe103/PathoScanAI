@@ -1,40 +1,44 @@
-import { analysisResults, type AnalysisResult, type InsertResult } from "@shared/schema";
+import { Analysis } from './models/Analysis';
+
+export interface IAnalysis {
+  imageUrl: string;
+  results: {
+    e_coli: number;
+    klebsiella: number;
+    acinetobacter: number;
+    pseudomonas: number;
+    enterobacter: number;
+  };
+  confidence: {
+    e_coli: number;
+    klebsiella: number;
+    acinetobacter: number;
+    pseudomonas: number;
+    enterobacter: number;
+  };
+  notes?: string;
+  timestamp?: Date;
+}
 
 export interface IStorage {
-  createAnalysis(result: InsertResult): Promise<AnalysisResult>;
-  getAnalysis(id: number): Promise<AnalysisResult | undefined>;
-  getAllAnalyses(): Promise<AnalysisResult[]>;
+  createAnalysis(result: IAnalysis): Promise<IAnalysis>;
+  getAnalysis(id: string): Promise<IAnalysis | null>;
+  getAllAnalyses(): Promise<IAnalysis[]>;
 }
 
-export class MemStorage implements IStorage {
-  private analyses: Map<number, AnalysisResult>;
-  private currentId: number;
-
-  constructor() {
-    this.analyses = new Map();
-    this.currentId = 1;
+export class MongoStorage implements IStorage {
+  async createAnalysis(result: IAnalysis): Promise<IAnalysis> {
+    const analysis = new Analysis(result);
+    return await analysis.save();
   }
 
-  async createAnalysis(result: InsertResult): Promise<AnalysisResult> {
-    const id = this.currentId++;
-    const analysis: AnalysisResult = {
-      ...result,
-      id,
-      timestamp: new Date(),
-    };
-    this.analyses.set(id, analysis);
-    return analysis;
+  async getAnalysis(id: string): Promise<IAnalysis | null> {
+    return await Analysis.findById(id);
   }
 
-  async getAnalysis(id: number): Promise<AnalysisResult | undefined> {
-    return this.analyses.get(id);
-  }
-
-  async getAllAnalyses(): Promise<AnalysisResult[]> {
-    return Array.from(this.analyses.values()).sort((a, b) => 
-      b.timestamp.getTime() - a.timestamp.getTime()
-    );
+  async getAllAnalyses(): Promise<IAnalysis[]> {
+    return await Analysis.find().sort({ timestamp: -1 });
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new MongoStorage();

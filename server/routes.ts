@@ -1,10 +1,20 @@
 import type { Express } from "express";
 import { createServer } from "http";
 import { storage } from "./storage";
-import { insertResultSchema } from "@shared/schema";
 import sharp from "sharp";
+import mongoose from 'mongoose';
 
 export async function registerRoutes(app: Express) {
+  // Health check endpoint
+  app.get("/api/health", (_req, res) => {
+    const dbStatus = mongoose.connection.readyState === 1 ? "connected" : "disconnected";
+    res.json({
+      status: "ok",
+      mongodb: dbStatus,
+      timestamp: new Date().toISOString()
+    });
+  });
+
   app.post("/api/analyze", async (req, res) => {
     try {
       const imageData = req.body.image;
@@ -38,25 +48,35 @@ export async function registerRoutes(app: Express) {
         notes: req.body.notes,
       };
 
-      const validatedData = insertResultSchema.parse(mockResults);
-      const result = await storage.createAnalysis(validatedData);
+      const result = await storage.createAnalysis(mockResults);
       res.json(result);
     } catch (error) {
-      res.status(400).json({ message: "Invalid request" });
+      console.error('Error processing analysis:', error);
+      res.status(500).json({ message: "Error processing analysis" });
     }
   });
 
   app.get("/api/analyses", async (_req, res) => {
-    const analyses = await storage.getAllAnalyses();
-    res.json(analyses);
+    try {
+      const analyses = await storage.getAllAnalyses();
+      res.json(analyses);
+    } catch (error) {
+      console.error('Error fetching analyses:', error);
+      res.status(500).json({ message: "Server error" });
+    }
   });
 
   app.get("/api/analysis/:id", async (req, res) => {
-    const analysis = await storage.getAnalysis(Number(req.params.id));
-    if (!analysis) {
-      return res.status(404).json({ message: "Analysis not found" });
+    try {
+      const analysis = await storage.getAnalysis(req.params.id);
+      if (!analysis) {
+        return res.status(404).json({ message: "Analysis not found" });
+      }
+      res.json(analysis);
+    } catch (error) {
+      console.error('Error fetching analysis:', error);
+      res.status(500).json({ message: "Server error" });
     }
-    res.json(analysis);
   });
 
   return createServer(app);
