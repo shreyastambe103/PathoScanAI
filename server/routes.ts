@@ -19,7 +19,7 @@ export async function registerRoutes(app: Express) {
     try {
       // Check database connection
       if (mongoose.connection.readyState !== 1) {
-        throw new Error('Database connection is not available');
+        console.warn('Database unavailable, using in-memory storage');
       }
 
       const imageData = req.body.image;
@@ -64,7 +64,7 @@ export async function registerRoutes(app: Express) {
   app.get("/api/analyses", async (_req, res) => {
     try {
       if (mongoose.connection.readyState !== 1) {
-        throw new Error('Database connection is not available');
+        console.warn('Database unavailable, using in-memory storage');
       }
       const analyses = await storage.getAllAnalyses();
       res.json(analyses);
@@ -80,7 +80,7 @@ export async function registerRoutes(app: Express) {
   app.get("/api/analysis/:id", async (req, res) => {
     try {
       if (mongoose.connection.readyState !== 1) {
-        throw new Error('Database connection is not available');
+        console.warn('Database unavailable, using in-memory storage');
       }
       const analysis = await storage.getAnalysis(req.params.id);
       if (!analysis) {
