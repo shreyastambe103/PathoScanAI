@@ -1,4 +1,5 @@
 import { Analysis } from './models/Analysis';
+import mongoose from 'mongoose';
 
 export interface IAnalysis {
   imageUrl: string;
@@ -54,16 +55,34 @@ export class MemoryStorage implements IStorage {
 
 export class MongoStorage implements IStorage {
   async createAnalysis(result: IAnalysis): Promise<IAnalysis> {
-    const analysis = new Analysis(result);
-    return await analysis.save();
+    try {
+      const analysis = new Analysis({
+        ...result,
+        timestamp: new Date()
+      });
+      return await analysis.save();
+    } catch (error) {
+      console.error('Error saving to MongoDB:', error);
+      throw error;
+    }
   }
 
   async getAnalysis(id: string): Promise<IAnalysis | null> {
-    return await Analysis.findById(id);
+    try {
+      return await Analysis.findById(id);
+    } catch (error) {
+      console.error('Error fetching from MongoDB:', error);
+      throw error;
+    }
   }
 
   async getAllAnalyses(): Promise<IAnalysis[]> {
-    return await Analysis.find().sort({ timestamp: -1 });
+    try {
+      return await Analysis.find().sort({ timestamp: -1 });
+    } catch (error) {
+      console.error('Error fetching all from MongoDB:', error);
+      throw error;
+    }
   }
 }
 
@@ -74,7 +93,7 @@ const memoryStorage = new MemoryStorage();
 // Export a proxy that switches between MongoDB and in-memory storage based on connection state
 export const storage = new Proxy({} as IStorage, {
   get: (target, prop) => {
-    const isMongoConnected = require('mongoose').connection.readyState === 1;
+    const isMongoConnected = mongoose.connection.readyState === 1;
     const currentStorage = isMongoConnected ? mongoStorage : memoryStorage;
     return currentStorage[prop as keyof IStorage];
   }
