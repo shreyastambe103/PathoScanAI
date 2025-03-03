@@ -17,6 +17,11 @@ export async function registerRoutes(app: Express) {
 
   app.post("/api/analyze", async (req, res) => {
     try {
+      // Check database connection
+      if (mongoose.connection.readyState !== 1) {
+        throw new Error('Database connection is not available');
+      }
+
       const imageData = req.body.image;
       if (!imageData) {
         return res.status(400).json({ message: "No image provided" });
@@ -58,16 +63,25 @@ export async function registerRoutes(app: Express) {
 
   app.get("/api/analyses", async (_req, res) => {
     try {
+      if (mongoose.connection.readyState !== 1) {
+        throw new Error('Database connection is not available');
+      }
       const analyses = await storage.getAllAnalyses();
       res.json(analyses);
     } catch (error) {
       console.error('Error fetching analyses:', error);
-      res.status(500).json({ message: "Server error" });
+      res.status(500).json({ 
+        message: "Server error",
+        details: mongoose.connection.readyState !== 1 ? "Database unavailable" : "Error fetching data"
+      });
     }
   });
 
   app.get("/api/analysis/:id", async (req, res) => {
     try {
+      if (mongoose.connection.readyState !== 1) {
+        throw new Error('Database connection is not available');
+      }
       const analysis = await storage.getAnalysis(req.params.id);
       if (!analysis) {
         return res.status(404).json({ message: "Analysis not found" });

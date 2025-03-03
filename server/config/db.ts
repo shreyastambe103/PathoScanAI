@@ -19,7 +19,7 @@ export const connectDB = async () => {
     console.log('MongoDB Connected Successfully');
   } catch (error) {
     console.error('MongoDB connection error:', error);
-    process.exit(1);
+    //process.exit(1); // Removed to allow retry
   }
 };
 
@@ -34,4 +34,16 @@ mongoose.connection.on('error', (err) => {
 
 mongoose.connection.on('disconnected', () => {
   console.log('Mongoose disconnected');
+});
+
+// Add connection retry logic
+mongoose.connection.on('disconnected', () => {
+  console.log('MongoDB disconnected. Attempting to reconnect...');
+  setTimeout(connectDB, 5000); // Retry connection after 5 seconds
+});
+
+// Handle process termination
+process.on('SIGINT', async () => {
+  await mongoose.connection.close();
+  process.exit(0);
 });
