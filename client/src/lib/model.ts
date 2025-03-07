@@ -4,8 +4,13 @@ let model: tf.LayersModel | null = null;
 
 export async function initializeModel() {
   if (!model) {
-    // Load model from the Teachable Machine shared URL
-    model = await tf.loadLayersModel('https://teachablemachine.withgoogle.com/models/KXbEEmkwu/model.json');
+    try {
+      // Load model from the updated Teachable Machine shared URL
+      model = await tf.loadLayersModel('https://teachablemachine.withgoogle.com/models/KXbEEmkwu/model.json');
+    } catch (error) {
+      console.error('Error loading model:', error);
+      throw new Error('Failed to load the classification model');
+    }
   }
   return model;
 }

@@ -6,7 +6,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { CardContent } from "@/components/ui/card";
-import { Upload, ImagePlus } from "lucide-react";
+import { Upload, ImagePlus, Info } from "lucide-react";
 import { classifyImage } from "@/lib/model";
 import AnalysisResult from "./analysis-result";
 import type { AnalysisResult as AnalysisResultType } from "@shared/schema";
@@ -17,7 +17,7 @@ export default function ImageUpload() {
   const { toast } = useToast();
   const { register, handleSubmit, reset } = useForm();
 
-  const { mutate, data: result, isPending } = useMutation({
+  const { mutate, data: result, isPending, reset: resetMutation } = useMutation({
     mutationFn: async (data: { 
       image: string; 
       notes: string;
@@ -48,7 +48,7 @@ export default function ImageUpload() {
     if (!file.type.startsWith("image/")) {
       toast({
         title: "Invalid File",
-        description: "Please upload an image file",
+        description: "Please upload an image file (JPG, PNG, or GIF)",
         variant: "destructive",
       });
       return;
@@ -85,6 +85,7 @@ export default function ImageUpload() {
   const handleReset = () => {
     setPreview(undefined);
     reset();
+    resetMutation();
   };
 
   return (
@@ -92,7 +93,9 @@ export default function ImageUpload() {
       {result ? (
         <div className="space-y-4">
           <AnalysisResult result={result as AnalysisResultType} />
-          <Button onClick={handleReset}>Analyze Another Sample</Button>
+          <Button onClick={handleReset} className="w-full">
+            Analyze Another Sample
+          </Button>
         </div>
       ) : (
         <form onSubmit={onSubmit} className="space-y-4">
@@ -119,13 +122,17 @@ export default function ImageUpload() {
               <label className="block cursor-pointer">
                 <input
                   type="file"
-                  accept="image/*"
+                  accept="image/jpeg,image/png,image/gif"
                   onChange={onFileChange}
                   className="hidden"
                 />
                 <div className="h-32 flex flex-col items-center justify-center gap-2 text-muted-foreground">
                   <Upload className="h-8 w-8" />
                   <span>Click or drag image to upload</span>
+                  <div className="flex items-center gap-1 text-xs">
+                    <Info className="h-3 w-3" />
+                    <span>Supported formats: JPG, PNG, GIF</span>
+                  </div>
                 </div>
               </label>
             )}
