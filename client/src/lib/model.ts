@@ -4,7 +4,8 @@ let model: tf.LayersModel | null = null;
 
 export async function initializeModel() {
   if (!model) {
-    model = await tf.loadLayersModel('./my_model/model.json');
+    // Load model from the Teachable Machine shared URL
+    model = await tf.loadLayersModel('https://teachablemachine.withgoogle.com/models/KXbEEmkwu/model.json');
   }
   return model;
 }
@@ -13,25 +14,32 @@ export async function classifyImage(imageElement: HTMLImageElement): Promise<{
   s_aureus: number;
   e_coli: number;
 }> {
-  const model = await initializeModel();
+  try {
+    const model = await initializeModel();
 
-  // Convert the image to a tensor
-  const tfImg = tf.browser.fromPixels(imageElement)
-    .resizeBilinear([224, 224]) 
-    .expandDims()
-    .toFloat()
-    .div(255.0);
+    // Preprocess image according to Teachable Machine requirements
+    const tfImg = tf.browser.fromPixels(imageElement)
+      .resizeBilinear([224, 224]) // Teachable Machine uses 224x224
+      .toFloat()
+      .expandDims()
+      .div(127.5)
+      .sub(1); // Normalize to [-1, 1]
 
-  // Get predictions
-  const predictions = await model.predict(tfImg) as tf.Tensor;
-  const probabilities = await predictions.data();
+    // Get predictions
+    const predictions = await model.predict(tfImg) as tf.Tensor;
+    const probabilities = await predictions.data();
 
-  // Cleanup
-  tfImg.dispose();
-  predictions.dispose();
+    // Cleanup
+    tfImg.dispose();
+    predictions.dispose();
 
-  return {
-    s_aureus: probabilities[0],
-    e_coli: probabilities[1]
-  };
+    // Return probabilities for both classes
+    return {
+      s_aureus: probabilities[0],
+      e_coli: probabilities[1]
+    };
+  } catch (error) {
+    console.error('Error classifying image:', error);
+    throw new Error('Failed to classify image');
+  }
 }
