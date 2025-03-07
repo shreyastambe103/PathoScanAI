@@ -5,18 +5,8 @@ interface AnalysisResult {
   _id: string;
   imageUrl: string;
   results: {
+    s_aureus: number;
     e_coli: number;
-    klebsiella: number;
-    acinetobacter: number;
-    pseudomonas: number;
-    enterobacter: number;
-  };
-  confidence: {
-    e_coli: number;
-    klebsiella: number;
-    acinetobacter: number;
-    pseudomonas: number;
-    enterobacter: number;
   };
   notes?: string;
   timestamp: string;
@@ -28,11 +18,8 @@ interface Props {
 
 export default function AnalysisResult({ result }: Props) {
   const bacteriaTypes = [
+    { key: "s_aureus", name: "S. aureus" },
     { key: "e_coli", name: "E. coli" },
-    { key: "klebsiella", name: "Klebsiella" },
-    { key: "acinetobacter", name: "Acinetobacter" },
-    { key: "pseudomonas", name: "Pseudomonas" },
-    { key: "enterobacter", name: "Enterobacter" },
   ] as const;
 
   return (
@@ -61,8 +48,7 @@ export default function AnalysisResult({ result }: Props) {
                 <div className="flex justify-between text-sm">
                   <span>{name}</span>
                   <span className="text-muted-foreground">
-                    {(result.results[key] * 100).toFixed(1)}% (
-                    {(result.confidence[key] * 100).toFixed(1)}% confidence)
+                    {(result.results[key] * 100).toFixed(1)}%
                   </span>
                 </div>
                 <Progress value={result.results[key] * 100} />

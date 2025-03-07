@@ -6,18 +6,8 @@ const AnalysisSchema = new mongoose.Schema({
     required: true
   },
   results: {
-    e_coli: Number,
-    klebsiella: Number,
-    acinetobacter: Number,
-    pseudomonas: Number,
-    enterobacter: Number
-  },
-  confidence: {
-    e_coli: Number,
-    klebsiella: Number,
-    acinetobacter: Number,
-    pseudomonas: Number,
-    enterobacter: Number
+    s_aureus: Number,
+    e_coli: Number
   },
   notes: String,
   timestamp: {

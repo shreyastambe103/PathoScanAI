@@ -22,38 +22,27 @@ export async function registerRoutes(app: Express) {
         console.warn('Database unavailable, using in-memory storage');
       }
 
-      const imageData = req.body.image;
-      if (!imageData) {
-        return res.status(400).json({ message: "No image provided" });
+      const { image, classification, notes } = req.body;
+      if (!image || !classification) {
+        return res.status(400).json({ message: "Missing required data" });
       }
 
       // Basic image preprocessing with Sharp
-      const processedImage = await sharp(Buffer.from(imageData, 'base64'))
+      const processedImage = await sharp(Buffer.from(image, 'base64'))
         .resize(512, 512, { fit: 'contain' })
         .normalize()
         .toBuffer();
 
-      // Mock ML analysis results for now
-      const mockResults = {
+      const analysisData = {
         imageUrl: `data:image/jpeg;base64,${processedImage.toString('base64')}`,
         results: {
-          e_coli: Math.random(),
-          klebsiella: Math.random(),
-          acinetobacter: Math.random(),
-          pseudomonas: Math.random(),
-          enterobacter: Math.random(),
+          s_aureus: classification.s_aureus,
+          e_coli: classification.e_coli
         },
-        confidence: {
-          e_coli: Math.random(),
-          klebsiella: Math.random(),
-          acinetobacter: Math.random(),
-          pseudomonas: Math.random(),
-          enterobacter: Math.random(),
-        },
-        notes: req.body.notes,
+        notes
       };
 
-      const result = await storage.createAnalysis(mockResults);
+      const result = await storage.createAnalysis(analysisData);
       res.json(result);
     } catch (error) {
       console.error('Error processing analysis:', error);

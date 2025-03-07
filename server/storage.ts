@@ -4,18 +4,8 @@ import mongoose from 'mongoose';
 export interface IAnalysis {
   imageUrl: string;
   results: {
+    s_aureus: number;
     e_coli: number;
-    klebsiella: number;
-    acinetobacter: number;
-    pseudomonas: number;
-    enterobacter: number;
-  };
-  confidence: {
-    e_coli: number;
-    klebsiella: number;
-    acinetobacter: number;
-    pseudomonas: number;
-    enterobacter: number;
   };
   notes?: string;
   timestamp?: Date;
