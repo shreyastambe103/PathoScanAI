@@ -21,7 +21,7 @@ export default function ImageUpload() {
     mutationFn: async (data: { 
       image: string; 
       notes: string;
-      classification: { s_aureus: number; e_coli: number; }
+      classification: { s_aureus: number; e_coli: number; invalid: number; }
     }) => {
       const res = await apiRequest("POST", "/api/analyze", data);
       return res.json();
@@ -48,7 +48,7 @@ export default function ImageUpload() {
     if (!file.type.startsWith("image/")) {
       toast({
         title: "Invalid File",
-        description: "Please upload an image file (JPG, PNG, or GIF)",
+        description: "Please upload an image file (JPG or PNG)",
         variant: "destructive",
       });
       return;
@@ -67,6 +67,16 @@ export default function ImageUpload() {
     try {
       // Classify the image using our ML model
       const classification = await classifyImage(imageRef.current);
+
+      // Check if the image is invalid
+      if (classification.invalid > 0.5) {
+        toast({
+          title: "Invalid Image",
+          description: "Please upload a valid microscopic sample image.",
+          variant: "destructive",
+        });
+        return;
+      }
 
       mutate({
         image: preview.split(",")[1],
@@ -122,7 +132,7 @@ export default function ImageUpload() {
               <label className="block cursor-pointer">
                 <input
                   type="file"
-                  accept="image/jpeg,image/png,image/gif"
+                  accept="image/jpeg,image/png"
                   onChange={onFileChange}
                   className="hidden"
                 />
@@ -131,7 +141,7 @@ export default function ImageUpload() {
                   <span>Click or drag image to upload</span>
                   <div className="flex items-center gap-1 text-xs">
                     <Info className="h-3 w-3" />
-                    <span>Supported formats: JPG, PNG, GIF</span>
+                    <span>Supported formats: JPG, PNG</span>
                   </div>
                 </div>
               </label>

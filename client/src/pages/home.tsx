@@ -11,7 +11,7 @@ export default function Home() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Microscope className="h-6 w-6 text-primary" />
-            <h1 className="text-xl font-semibold">EKAPE Analysis</h1>
+            <h1 className="text-xl font-semibold">ESKAPE Analysis</h1>
           </div>
           <Link href="/reports">
             <Button variant="outline">View Reports</Button>
@@ -24,7 +24,7 @@ export default function Home() {
           <CardHeader>
             <CardTitle>Analyze Urine Sample</CardTitle>
             <CardDescription>
-              Upload a microscopic image of your urine sample for EKAPE bacteria detection
+              Upload a microscopic image of your urine sample for ESKAPE bacteria detection
             </CardDescription>
           </CardHeader>
           <ImageUpload />
@@ -34,7 +34,7 @@ export default function Home() {
           <Card className="p-6">
             <h3 className="font-semibold mb-2">High Accuracy</h3>
             <p className="text-sm text-muted-foreground">
-              Advanced ML model trained on thousands of samples
+              Advanced ML model trained on multiple samples
             </p>
           </Card>
           <Card className="p-6">

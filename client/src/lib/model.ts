@@ -6,7 +6,7 @@ export async function initializeModel() {
   if (!model) {
     try {
       // Load model from the updated Teachable Machine shared URL
-      model = await tf.loadLayersModel('https://teachablemachine.withgoogle.com/models/KXbEEmkwu/model.json');
+      model = await tf.loadLayersModel('https://teachablemachine.withgoogle.com/models/-7jBmA0oM/model.json');
     } catch (error) {
       console.error('Error loading model:', error);
       throw new Error('Failed to load the classification model');
@@ -18,6 +18,7 @@ export async function initializeModel() {
 export async function classifyImage(imageElement: HTMLImageElement): Promise<{
   s_aureus: number;
   e_coli: number;
+  invalid: number;
 }> {
   try {
     const model = await initializeModel();
@@ -41,7 +42,8 @@ export async function classifyImage(imageElement: HTMLImageElement): Promise<{
     // Return probabilities for both classes
     return {
       s_aureus: probabilities[0],
-      e_coli: probabilities[1]
+      e_coli: probabilities[1],
+      invalid: probabilities[2]
     };
   } catch (error) {
     console.error('Error classifying image:', error);

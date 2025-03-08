@@ -1,6 +1,6 @@
-# EKAPE Analysis Application
+# ESKAPE Analysis Application
 
-A web application for analyzing microscopic urine sample images to detect EKAPE category bacteria.
+A web application for analyzing microscopic urine sample images to detect ESKAPE category bacteria.
 
 ## Prerequisites
 
@@ -28,8 +28,8 @@ MONGODB_URI=your_mongodb_connection_string
 ```
 
 Replace `your_mongodb_connection_string` with either:
-- Local MongoDB: `mongodb://localhost:27017/ekape_analysis`
-- MongoDB Atlas: `mongodb+srv://<username>:<password>@<cluster>.mongodb.net/ekape_analysis`
+- Local MongoDB: `mongodb://localhost:27017/eskape_analysis`
+- MongoDB Atlas: `mongodb+srv://<username>:<password>@<cluster>.mongodb.net/eskape_analysis`
 
 ## Running the Application
 
@@ -47,7 +47,7 @@ This will start both the backend server and frontend development server.
 ## Features
 
 - Upload and analyze microscopic urine sample images
-- Detect EKAPE category bacteria
+- Detect ESKAPE category bacteria
 - View analysis results with confidence scores
 - Store and retrieve analysis history
 - Responsive design for all devices
