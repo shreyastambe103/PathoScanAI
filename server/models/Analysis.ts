@@ -7,7 +7,8 @@ const AnalysisSchema = new mongoose.Schema({
   },
   results: {
     s_aureus: Number,
-    e_coli: Number
+    e_coli: Number,
+    invalid: Number
   },
   notes: String,
   timestamp: {

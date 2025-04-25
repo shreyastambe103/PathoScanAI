@@ -11,6 +11,31 @@ import { classifyImage } from "@/lib/model";
 import AnalysisResult from "./analysis-result";
 import type { AnalysisResult as AnalysisResultType } from "@shared/schema";
 
+// Helper function to convert from API response format to component format
+function adaptToComponentFormat(result: any): {
+  _id: string;
+  imageUrl: string;
+  results: {
+    s_aureus: number;
+    e_coli: number;
+    invalid?: number;
+  };
+  notes?: string;
+  timestamp: string;
+} {
+  return {
+    _id: result.id?.toString() || result._id || '',
+    imageUrl: result.imageUrl,
+    results: {
+      s_aureus: result.results?.s_aureus || 0,
+      e_coli: result.results?.e_coli || 0,
+      invalid: result.results?.invalid || 0
+    },
+    notes: result.notes || '',
+    timestamp: result.timestamp?.toString() || new Date().toString()
+  };
+}
+
 export default function ImageUpload() {
   const [preview, setPreview] = useState<string>();
   const imageRef = useRef<HTMLImageElement>(null);
@@ -96,13 +121,17 @@ export default function ImageUpload() {
     setPreview(undefined);
     reset();
     resetMutation();
+    // Ensure we're actually resetting the view to the upload form
+    if (result) {
+      window.location.href = window.location.pathname;
+    }
   };
 
   return (
     <CardContent>
       {result ? (
         <div className="space-y-4">
-          <AnalysisResult result={result as AnalysisResultType} />
+          <AnalysisResult result={adaptToComponentFormat(result)} />
           <Button onClick={handleReset} className="w-full">
             Analyze Another Sample
           </Button>

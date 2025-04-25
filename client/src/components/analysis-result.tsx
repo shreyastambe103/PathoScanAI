@@ -7,6 +7,7 @@ interface AnalysisResult {
   results: {
     s_aureus: number;
     e_coli: number;
+    invalid?: number;
   };
   notes?: string;
   timestamp: string;
@@ -18,8 +19,8 @@ interface Props {
 
 export default function AnalysisResult({ result }: Props) {
   const bacteriaTypes = [
-    { key: "s_aureus", name: "S. aureus" },
-    { key: "e_coli", name: "E. coli" },
+    { key: "s_aureus", name: "E. coli" },
+    { key: "e_coli", name: "S. aureus" },
   ] as const;
 
   return (
