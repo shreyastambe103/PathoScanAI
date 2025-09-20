@@ -52,7 +52,8 @@ export class MongoStorage implements IStorage {
         ...result,
         timestamp: new Date()
       });
-      return await analysis.save();
+      const saved = await analysis.save();
+      return saved.toObject() as IAnalysis;
     } catch (error) {
       console.error('Error saving to MongoDB:', error);
       throw error;
@@ -61,7 +62,8 @@ export class MongoStorage implements IStorage {
 
   async getAnalysis(id: string): Promise<IAnalysis | null> {
     try {
-      return await Analysis.findById(id);
+      const result = await Analysis.findById(id);
+      return result ? result.toObject() as IAnalysis : null;
     } catch (error) {
       console.error('Error fetching from MongoDB:', error);
       throw error;
@@ -70,7 +72,8 @@ export class MongoStorage implements IStorage {
 
   async getAllAnalyses(): Promise<IAnalysis[]> {
     try {
-      return await Analysis.find().sort({ timestamp: -1 });
+      const results = await Analysis.find().sort({ timestamp: -1 });
+      return results.map(doc => doc.toObject() as IAnalysis);
     } catch (error) {
       console.error('Error fetching all from MongoDB:', error);
       throw error;
