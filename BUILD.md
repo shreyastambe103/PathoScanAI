@@ -136,7 +136,11 @@ For deployment to AWS EC2:
 6. Configure Nginx as a reverse proxy (optional):
    ```bash
    sudo yum install -y nginx
+<<<<<<< HEAD
    # Configure Nginx to proxy requests to the Node.js application (port 5000)
+=======
+   # Configure Nginx to proxy requests to the Node.js application (port 8080)
+>>>>>>> a47e7aecac876d457013c1d57c25e2fb2aa67360
    ```
 
 ### GitHub Actions CI/CD
@@ -164,7 +168,11 @@ Configure the application with these environment variables:
 | Variable | Description | Default | Required |
 |----------|-------------|---------|----------|
 | `NODE_ENV` | Environment mode | `development` | No |
+<<<<<<< HEAD
 | `PORT` | Server port | `5000` | No |
+=======
+| `PORT` | Server port | `8080` | No |
+>>>>>>> a47e7aecac876d457013c1d57c25e2fb2aa67360
 | `MONGODB_URI` | MongoDB connection string | - | Yes |
 
 ## Troubleshooting

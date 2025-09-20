@@ -15,10 +15,16 @@ function adaptToComponentFormat(result: any): {
   _id: string;
   imageUrl: string;
   results: {
+<<<<<<< HEAD
     ec: number;      // E.coli
     sa: number;      // S.Aureus
     kp: number;      // Klebsiella Pneumonae
     invalid?: number; // Invalid classification
+=======
+    s_aureus: number;
+    e_coli: number;
+    invalid?: number;
+>>>>>>> a47e7aecac876d457013c1d57c25e2fb2aa67360
   };
   notes?: string;
   timestamp: string;
@@ -27,9 +33,14 @@ function adaptToComponentFormat(result: any): {
     _id: result.id?.toString() || result._id || '',
     imageUrl: result.imageUrl,
     results: {
+<<<<<<< HEAD
       ec: result.results?.ec || 0,
       sa: result.results?.sa || 0,
       kp: result.results?.kp || 0,
+=======
+      s_aureus: result.results?.s_aureus || 0,
+      e_coli: result.results?.e_coli || 0,
+>>>>>>> a47e7aecac876d457013c1d57c25e2fb2aa67360
       invalid: result.results?.invalid || 0
     },
     notes: result.notes || '',
@@ -133,7 +144,11 @@ export default function ImageUpload() {
       {result ? (
         <div className="space-y-4">
           <AnalysisResult result={adaptToComponentFormat(result)} />
+<<<<<<< HEAD
           <Button onClick={handleReset} className="w-full" data-testid="analyze-another-button">
+=======
+          <Button onClick={handleReset} className="w-full">
+>>>>>>> a47e7aecac876d457013c1d57c25e2fb2aa67360
             Analyze Another Sample
           </Button>
         </div>

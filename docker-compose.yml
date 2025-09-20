@@ -12,7 +12,11 @@ services:
       - PORT=5000
       - MONGODB_URI=${MONGODB_URI}
     healthcheck:
+<<<<<<< HEAD
       test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
+=======
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/health"]
+>>>>>>> a47e7aecac876d457013c1d57c25e2fb2aa67360
       interval: 30s
       timeout: 10s
       retries: 3

@@ -41,8 +41,8 @@ npm run dev
 This will start both the backend server and frontend development server.
 
 2. Access the application:
-- Open your browser and navigate to `http://localhost:5000`
-- The API endpoints will be available at `http://localhost:5000/api`
+- Open your browser and navigate to `http://localhost:8080`
+- The API endpoints will be available at `http://localhost:8080/api`
 
 ## Features
 
@@ -65,3 +65,107 @@ This will start both the backend server and frontend development server.
 - Backend: Express.js, Node.js
 - Database: MongoDB with Mongoose
 - Image Processing: Sharp
+- Machine Learning: TensorFlow.js
+
+## Deployment to AWS EC2
+
+### Prerequisites
+- AWS Account
+- EC2 Instance (t2.micro or larger recommended)
+- MongoDB Atlas account (or MongoDB installed on EC2)
+
+### Deployment Steps
+
+1. **Set up an EC2 instance:**
+   - Launch an EC2 instance with Ubuntu Server (20.04 LTS or newer)
+   - Configure security groups to allow HTTP (80), HTTPS (443), and SSH (22) traffic
+   - Connect to your instance via SSH
+
+2. **Install required software:**
+   ```bash
+   sudo apt update
+   sudo apt install -y nodejs npm git nginx
+   sudo npm install -g n
+   sudo n lts
+   hash -r
+   ```
+
+3. **Clone and set up the application:**
+   ```bash
+   git clone <repository-url>
+   cd <repository-name>
+   npm install
+   ```
+
+4. **Configure environment variables:**
+   ```bash
+   cp .env.example .env
+   nano .env
+   ```
+   Update the MongoDB URI and other variables as needed.
+
+5. **Build the application:**
+   ```bash
+   npm run build
+   ```
+
+6. **Configure Nginx as a reverse proxy:**
+   ```bash
+   sudo nano /etc/nginx/sites-available/eskape-analysis
+   ```
+
+   Add the following configuration:
+   ```
+   server {
+       listen 80;
+       server_name your-domain.com;
+
+       location / {
+           proxy_pass http://localhost:8080;
+           proxy_http_version 1.1;
+           proxy_set_header Upgrade $http_upgrade;
+           proxy_set_header Connection 'upgrade';
+           proxy_set_header Host $host;
+           proxy_cache_bypass $http_upgrade;
+       }
+   }
+   ```
+
+7. **Enable the Nginx site and restart:**
+   ```bash
+   sudo ln -s /etc/nginx/sites-available/eskape-analysis /etc/nginx/sites-enabled/
+   sudo nginx -t
+   sudo systemctl restart nginx
+   ```
+
+8. **Set up the application as a service:**
+   ```bash
+   sudo nano /etc/systemd/system/eskape-analysis.service
+   ```
+
+   Add the following configuration:
+   ```
+   [Unit]
+   Description=ESKAPE Analysis Application
+   After=network.target
+
+   [Service]
+   Type=simple
+   User=ubuntu
+   WorkingDirectory=/home/ubuntu/<repository-name>
+   ExecStart=/usr/bin/npm start
+   Restart=on-failure
+
+   [Install]
+   WantedBy=multi-user.target
+   ```
+
+9. **Start and enable the service:**
+   ```bash
+   sudo systemctl enable eskape-analysis
+   sudo systemctl start eskape-analysis
+   ```
+
+10. **Access your application:**
+    - Via the EC2 instance's public IP address or domain name
+    - For production environments, set up HTTPS using Certbot/Let's Encrypt

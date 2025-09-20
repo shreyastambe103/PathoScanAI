@@ -39,10 +39,17 @@ RUN apk add --no-cache curl
 
 # Set environment variables
 ENV NODE_ENV=production
+<<<<<<< HEAD
 ENV PORT=5000
 
 # Expose port
 EXPOSE 5000
+=======
+ENV PORT=8080
+
+# Expose port
+EXPOSE 8080
+>>>>>>> a47e7aecac876d457013c1d57c25e2fb2aa67360
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \

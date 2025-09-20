@@ -90,7 +90,11 @@ app.use((req, res, next) => {
   setupStaticServer(app);
 
   // Get port from environment or use default
+<<<<<<< HEAD
   const port = process.env.PORT || 5000;
+=======
+  const port = process.env.PORT || 8080;  
+>>>>>>> a47e7aecac876d457013c1d57c25e2fb2aa67360
   
   // Start server
   server.listen({
