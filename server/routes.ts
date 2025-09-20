@@ -5,12 +5,22 @@ import sharp from "sharp";
 import mongoose from 'mongoose';
 
 export async function registerRoutes(app: Express) {
-  // Health check endpoint
+  // Health check endpoint for AWS EC2 monitoring
   app.get("/api/health", (_req, res) => {
     const dbStatus = mongoose.connection.readyState === 1 ? "connected" : "disconnected";
+    const uptimeSeconds = process.uptime();
+    const uptimeFormatted = new Date(uptimeSeconds * 1000).toISOString().substr(11, 8);
+    
     res.json({
       status: "ok",
       mongodb: dbStatus,
+      environment: process.env.NODE_ENV || 'development',
+      uptime: uptimeFormatted,
+      memory: {
+        rss: Math.round(process.memoryUsage().rss / 1024 / 1024) + ' MB',
+        heapTotal: Math.round(process.memoryUsage().heapTotal / 1024 / 1024) + ' MB',
+        heapUsed: Math.round(process.memoryUsage().heapUsed / 1024 / 1024) + ' MB'
+      },
       timestamp: new Date().toISOString()
     });
   });
@@ -37,7 +47,8 @@ export async function registerRoutes(app: Express) {
         imageUrl: `data:image/jpeg;base64,${processedImage.toString('base64')}`,
         results: {
           s_aureus: classification.s_aureus,
-          e_coli: classification.e_coli
+          e_coli: classification.e_coli,
+          invalid: classification.invalid
         },
         notes
       };

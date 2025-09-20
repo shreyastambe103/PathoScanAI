@@ -1,6 +1,70 @@
-node_modules
-dist
+# Dependency directories
+node_modules/
+/.pnp
+.pnp.js
+
+# Build outputs
+dist/
+client/dist/
+server/dist/
+build/
+out/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Cache and logs
+.cache/
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm/
+.eslintcache
+
+# Testing
+/coverage
+.nyc_output
+
+# Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
 .DS_Store
-server/public
-vite.config.ts.*
-*.tar.gz
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+
+# Build and runtime scripts
+start.sh
+*.pid
+*.seed
+*.pid.lock
+
+# TypeScript cache
+*.tsbuildinfo
+
+# yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
