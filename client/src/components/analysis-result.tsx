@@ -20,14 +20,9 @@ interface Props {
 
 export default function AnalysisResult({ result }: Props) {
   const bacteriaTypes = [
-<<<<<<< HEAD
     { key: "ec", name: "E. coli" },
     { key: "sa", name: "S. aureus" },
     { key: "kp", name: "Klebsiella pneumoniae" },
-=======
-    { key: "s_aureus", name: "E. coli" },
-    { key: "e_coli", name: "S. aureus" },
->>>>>>> a47e7aecac876d457013c1d57c25e2fb2aa67360
   ] as const;
 
   return (
