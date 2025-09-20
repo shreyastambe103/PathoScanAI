@@ -94,11 +94,7 @@ chmod +x start.sh
 cat > healthcheck.sh << EOL
 #!/bin/bash
 # Health check script for monitoring
-<<<<<<< HEAD
 curl -f http://localhost:\${PORT:-5000}/api/health || exit 1
-=======
-curl -f http://localhost:\${PORT:-8080}/api/health || exit 1
->>>>>>> a47e7aecac876d457013c1d57c25e2fb2aa67360
 EOL
 chmod +x healthcheck.sh
 
