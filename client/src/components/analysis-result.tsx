@@ -5,16 +5,10 @@ interface AnalysisResult {
   _id: string;
   imageUrl: string;
   results: {
-<<<<<<< HEAD
     ec: number;      // E.coli
     sa: number;      // S.Aureus
     kp: number;      // Klebsiella Pneumonae
     invalid?: number; // Invalid classification
-=======
-    s_aureus: number;
-    e_coli: number;
-    invalid?: number;
->>>>>>> a47e7aecac876d457013c1d57c25e2fb2aa67360
   };
   notes?: string;
   timestamp: string;
