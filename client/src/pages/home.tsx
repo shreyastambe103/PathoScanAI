@@ -46,15 +46,15 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
+    <div className="min-h-screen bg-background text-foreground dark:bg-gray-950">
       {/* Header */}
-      <header className="border-b border-gray-800 bg-gray-900">
+      <header className="border-b border-border bg-card dark:bg-gray-900 dark:border-gray-800">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-blue-600 rounded-lg">
               <Microscope className="h-6 w-6 text-white" />
             </div>
-            <h1 className="text-xl font-bold" data-testid="app-title">PathoScan AI</h1>
+            <h1 className="text-xl font-bold text-foreground dark:text-white" data-testid="app-title">PathoScan AI</h1>
           </div>
           
           <div className="flex items-center gap-4">
@@ -83,7 +83,7 @@ export default function Home() {
           <h2 className="text-3xl font-bold mb-4" data-testid="page-title">
             Bacterial Pathogen Classification
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto" data-testid="page-description">
+          <p className="text-muted-foreground dark:text-gray-400 text-lg max-w-2xl mx-auto" data-testid="page-description">
             Upload an image of a bacterial sample to analyze and identify the pathogen. Our AI model classifies 
             ESKAPE pathogens with high accuracy.
           </p>
@@ -92,7 +92,7 @@ export default function Home() {
         {/* Two Panel Layout */}
         <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {/* Left Panel - Upload */}
-          <Card className="bg-gray-900 border-gray-700" data-testid="upload-panel">
+          <Card className="bg-card dark:bg-gray-900 border-border dark:border-gray-700" data-testid="upload-panel">
             <CardContent className="p-6">
               <h3 className="text-xl font-semibold mb-4" data-testid="upload-section-title">
                 Upload Sample Image
@@ -106,7 +106,7 @@ export default function Home() {
           {/* Right Panel - Info & Recent Analyses */}
           <div className="space-y-8">
             {/* About PathoScan AI */}
-            <Card className="bg-gray-900 border-gray-700" data-testid="about-panel">
+            <Card className="bg-card dark:bg-gray-900 border-border dark:border-gray-700" data-testid="about-panel">
               <CardContent className="p-6">
                 <h3 className="text-xl font-semibold mb-6" data-testid="about-title">
                   About PathoScan AI
@@ -117,10 +117,10 @@ export default function Home() {
                       <Zap className="h-4 w-4 text-white" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-green-400" data-testid="feature-fast-title">
+                      <h4 className="font-semibold text-green-600 dark:text-green-400" data-testid="feature-fast-title">
                         Fast Analysis
                       </h4>
-                      <p className="text-sm text-gray-400" data-testid="feature-fast-description">
+                      <p className="text-sm text-muted-foreground dark:text-gray-400" data-testid="feature-fast-description">
                         Get results in seconds with our optimized AI model
                       </p>
                     </div>
@@ -131,10 +131,10 @@ export default function Home() {
                       <Target className="h-4 w-4 text-white" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-blue-400" data-testid="feature-accuracy-title">
+                      <h4 className="font-semibold text-blue-500 dark:text-blue-400" data-testid="feature-accuracy-title">
                         High Accuracy
                       </h4>
-                      <p className="text-sm text-gray-400" data-testid="feature-accuracy-description">
+                      <p className="text-sm text-muted-foreground dark:text-gray-400" data-testid="feature-accuracy-description">
                         Trained on extensive datasets from laboratory samples
                       </p>
                     </div>
@@ -145,10 +145,10 @@ export default function Home() {
                       <FlaskConical className="h-4 w-4 text-white" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-purple-400" data-testid="feature-research-title">
+                      <h4 className="font-semibold text-purple-500 dark:text-purple-400" data-testid="feature-research-title">
                         Research Grade
                       </h4>
-                      <p className="text-sm text-gray-400" data-testid="feature-research-description">
+                      <p className="text-sm text-muted-foreground dark:text-gray-400" data-testid="feature-research-description">
                         Developed with pathologists for reliable identification
                       </p>
                     </div>
@@ -159,10 +159,10 @@ export default function Home() {
                       <Shield className="h-4 w-4 text-white" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-orange-400" data-testid="feature-privacy-title">
+                      <h4 className="font-semibold text-orange-500 dark:text-orange-400" data-testid="feature-privacy-title">
                         Privacy Focused
                       </h4>
-                      <p className="text-sm text-gray-400" data-testid="feature-privacy-description">
+                      <p className="text-sm text-muted-foreground dark:text-gray-400" data-testid="feature-privacy-description">
                         All processing happens locally in your browser
                       </p>
                     </div>
@@ -172,7 +172,7 @@ export default function Home() {
             </Card>
 
             {/* Recent Analyses */}
-            <Card className="bg-gray-900 border-gray-700" data-testid="recent-analyses-panel">
+            <Card className="bg-card dark:bg-gray-900 border-border dark:border-gray-700" data-testid="recent-analyses-panel">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-xl font-semibold" data-testid="recent-analyses-title">
@@ -188,7 +188,7 @@ export default function Home() {
                 <div className="space-y-3">
                   {isLoadingAnalyses ? (
                     <div className="flex items-center justify-center py-8">
-                      <RefreshCw className="h-6 w-6 animate-spin text-gray-400" />
+                      <RefreshCw className="h-6 w-6 animate-spin text-muted-foreground" />
                     </div>
                   ) : recentAnalyses && recentAnalyses.length > 0 ? (
                     recentAnalyses.map((analysis: any, index: number) => {
@@ -196,14 +196,14 @@ export default function Home() {
                       return (
                         <div
                           key={analysis._id || index}
-                          className="flex items-center justify-between p-3 bg-gray-800 rounded-lg"
+                          className="flex items-center justify-between p-3 bg-muted/50 dark:bg-gray-800 rounded-lg"
                           data-testid={`recent-analysis-${index}`}
                         >
                           <div className="flex-1">
                             <p className="font-medium text-sm" data-testid={`analysis-result-${index}`}>
                               {topResult.name} ({topResult.confidence}%)
                             </p>
-                            <p className="text-xs text-gray-400" data-testid={`analysis-timestamp-${index}`}>
+                            <p className="text-xs text-muted-foreground dark:text-gray-400" data-testid={`analysis-timestamp-${index}`}>
                               {formatTimestamp(analysis.timestamp)}
                             </p>
                           </div>
@@ -213,8 +213,8 @@ export default function Home() {
                     })
                   ) : (
                     <div className="text-center py-8" data-testid="no-analyses">
-                      <RefreshCw className="h-12 w-12 text-gray-600 mx-auto mb-3" />
-                      <p className="text-gray-500">No recent analyses</p>
+                      <RefreshCw className="h-12 w-12 text-muted-foreground dark:text-gray-600 mx-auto mb-3" />
+                      <p className="text-muted-foreground dark:text-gray-500">No recent analyses</p>
                     </div>
                   )}
                 </div>
@@ -225,12 +225,12 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="mt-16 border-t border-gray-800 bg-gray-950">
+      <footer className="mt-16 border-t border-border dark:border-gray-800 bg-background dark:bg-gray-950">
         <div className="container mx-auto px-6 py-6 text-center">
-          <p className="text-sm text-gray-500" data-testid="copyright">
+          <p className="text-sm text-muted-foreground dark:text-gray-500" data-testid="copyright">
             © 2025 PathoScan AI - Bacterial Pathogen Classification Tool
           </p>
-          <p className="text-xs text-gray-600 mt-2" data-testid="disclaimer">
+          <p className="text-xs text-muted-foreground/80 dark:text-gray-600 mt-2" data-testid="disclaimer">
             For research and educational purposes only. Not for clinical diagnoses.
           </p>
         </div>

@@ -5,7 +5,6 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { CardContent } from "@/components/ui/card";
 import { Upload, ImagePlus, Info } from "lucide-react";
 import { classifyImage } from "@/lib/model";
 import AnalysisResult from "./analysis-result";
@@ -130,17 +129,17 @@ export default function ImageUpload() {
   };
 
   return (
-    <CardContent>
+    <>
       {result ? (
         <div className="space-y-4">
           <AnalysisResult result={adaptToComponentFormat(result)} />
-          <Button onClick={handleReset} className="w-full">
+          <Button onClick={handleReset} className="w-full" data-testid="analyze-another-button">
             Analyze Another Sample
           </Button>
         </div>
       ) : (
         <form onSubmit={onSubmit} className="space-y-4">
-          <div className="border-2 border-dashed rounded-lg p-4">
+          <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-4">
             {preview ? (
               <div className="space-y-4">
                 <img
@@ -148,29 +147,32 @@ export default function ImageUpload() {
                   src={preview}
                   alt="Preview"
                   className="max-h-64 mx-auto rounded"
+                  data-testid="preview-image"
                 />
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => setPreview(undefined)}
                   className="w-full"
+                  data-testid="choose-different-image-button"
                 >
                   <ImagePlus className="mr-2 h-4 w-4" />
                   Choose Different Image
                 </Button>
               </div>
             ) : (
-              <label className="block cursor-pointer">
+              <label className="block cursor-pointer" data-testid="upload-area">
                 <input
                   type="file"
                   accept="image/jpeg,image/png"
                   onChange={onFileChange}
                   className="hidden"
+                  data-testid="file-input"
                 />
-                <div className="h-32 flex flex-col items-center justify-center gap-2 text-muted-foreground">
+                <div className="py-8 px-4 flex flex-col items-center justify-center gap-2 text-muted-foreground min-h-[120px]">
                   <Upload className="h-8 w-8" />
-                  <span>Click or drag image to upload</span>
-                  <div className="flex items-center gap-1 text-xs">
+                  <span className="font-medium">Drag and drop image or click to browse</span>
+                  <div className="flex items-center gap-1 text-xs opacity-75">
                     <Info className="h-3 w-3" />
                     <span>Supported formats: JPG, PNG</span>
                   </div>
@@ -182,16 +184,19 @@ export default function ImageUpload() {
           <Textarea
             placeholder="Additional notes about the sample..."
             {...register("notes")}
+            className="min-h-[80px]"
+            data-testid="notes-input"
           />
 
           <Button
             type="submit"
             disabled={!preview || isPending}
             className="w-full"
+            data-testid="analyze-button"
           >
             {isPending ? (
               <div className="flex items-center gap-2">
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-background" />
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground" />
                 Analyzing...
               </div>
             ) : (
@@ -200,6 +205,6 @@ export default function ImageUpload() {
           </Button>
         </form>
       )}
-    </CardContent>
+    </>
   );
 }
