@@ -16,9 +16,10 @@ function adaptToComponentFormat(result: any): {
   _id: string;
   imageUrl: string;
   results: {
-    s_aureus: number;
-    e_coli: number;
-    invalid?: number;
+    ec: number;      // E.coli
+    sa: number;      // S.Aureus
+    kp: number;      // Klebsiella Pneumonae
+    invalid?: number; // Invalid classification
   };
   notes?: string;
   timestamp: string;
@@ -27,8 +28,9 @@ function adaptToComponentFormat(result: any): {
     _id: result.id?.toString() || result._id || '',
     imageUrl: result.imageUrl,
     results: {
-      s_aureus: result.results?.s_aureus || 0,
-      e_coli: result.results?.e_coli || 0,
+      ec: result.results?.ec || 0,
+      sa: result.results?.sa || 0,
+      kp: result.results?.kp || 0,
       invalid: result.results?.invalid || 0
     },
     notes: result.notes || '',
@@ -46,7 +48,7 @@ export default function ImageUpload() {
     mutationFn: async (data: { 
       image: string; 
       notes: string;
-      classification: { s_aureus: number; e_coli: number; invalid: number; }
+      classification: { ec: number; sa: number; kp: number; invalid: number; }
     }) => {
       const res = await apiRequest("POST", "/api/analyze", data);
       return res.json();

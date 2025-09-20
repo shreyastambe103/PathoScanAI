@@ -6,18 +6,10 @@ export const analysisResults = pgTable("analysis_results", {
   id: serial("id").primaryKey(),
   imageUrl: text("image_url").notNull(),
   results: jsonb("results").$type<{
-    e_coli: number;
-    klebsiella: number;
-    acinetobacter: number;
-    pseudomonas: number;
-    enterobacter: number;
-  }>().notNull(),
-  confidence: jsonb("confidence").$type<{
-    e_coli: number;
-    klebsiella: number;
-    acinetobacter: number;
-    pseudomonas: number;
-    enterobacter: number;
+    ec: number;      // E.coli
+    sa: number;      // S.Aureus
+    kp: number;      // Klebsiella Pneumonae
+    invalid: number; // Invalid classification
   }>().notNull(),
   timestamp: timestamp("timestamp").defaultNow(),
   notes: text("notes"),

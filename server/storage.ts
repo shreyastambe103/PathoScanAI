@@ -4,8 +4,10 @@ import mongoose from 'mongoose';
 export interface IAnalysis {
   imageUrl: string;
   results: {
-    s_aureus: number;
-    e_coli: number;
+    ec: number;      // E.coli
+    sa: number;      // S.Aureus  
+    kp: number;      // Klebsiella Pneumonae
+    invalid: number; // Invalid classification
   };
   notes?: string;
   timestamp?: Date;

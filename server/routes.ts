@@ -46,8 +46,9 @@ export async function registerRoutes(app: Express) {
       const analysisData = {
         imageUrl: `data:image/jpeg;base64,${processedImage.toString('base64')}`,
         results: {
-          s_aureus: classification.s_aureus,
-          e_coli: classification.e_coli,
+          ec: classification.ec,       // E.coli
+          sa: classification.sa,       // S.Aureus  
+          kp: classification.kp,       // Klebsiella Pneumonae
           invalid: classification.invalid
         },
         notes

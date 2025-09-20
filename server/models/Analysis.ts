@@ -6,9 +6,10 @@ const AnalysisSchema = new mongoose.Schema({
     required: true
   },
   results: {
-    s_aureus: Number,
-    e_coli: Number,
-    invalid: Number
+    ec: { type: Number, required: true },      // E.coli
+    sa: { type: Number, required: true },      // S.Aureus
+    kp: { type: Number, required: true },      // Klebsiella Pneumonae
+    invalid: { type: Number, required: true }  // Invalid classification
   },
   notes: String,
   timestamp: {

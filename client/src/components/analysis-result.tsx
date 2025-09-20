@@ -5,9 +5,10 @@ interface AnalysisResult {
   _id: string;
   imageUrl: string;
   results: {
-    s_aureus: number;
-    e_coli: number;
-    invalid?: number;
+    ec: number;      // E.coli
+    sa: number;      // S.Aureus
+    kp: number;      // Klebsiella Pneumonae
+    invalid?: number; // Invalid classification
   };
   notes?: string;
   timestamp: string;
@@ -19,8 +20,9 @@ interface Props {
 
 export default function AnalysisResult({ result }: Props) {
   const bacteriaTypes = [
-    { key: "s_aureus", name: "E. coli" },
-    { key: "e_coli", name: "S. aureus" },
+    { key: "ec", name: "E. coli" },
+    { key: "sa", name: "S. aureus" },
+    { key: "kp", name: "Klebsiella pneumoniae" },
   ] as const;
 
   return (

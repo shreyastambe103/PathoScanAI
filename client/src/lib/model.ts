@@ -6,7 +6,7 @@ export async function initializeModel() {
   if (!model) {
     try {
       // Load model from the updated Teachable Machine shared URL
-      model = await tf.loadLayersModel('https://teachablemachine.withgoogle.com/models/-7jBmA0oM/model.json');
+      model = await tf.loadLayersModel('https://teachablemachine.withgoogle.com/models/YR7_msqUp/model.json');
     } catch (error) {
       console.error('Error loading model:', error);
       throw new Error('Failed to load the classification model');
@@ -16,8 +16,9 @@ export async function initializeModel() {
 }
 
 export async function classifyImage(imageElement: HTMLImageElement): Promise<{
-  s_aureus: number;
-  e_coli: number;
+  ec: number;
+  sa: number;
+  kp: number;
   invalid: number;
 }> {
   try {
@@ -39,11 +40,13 @@ export async function classifyImage(imageElement: HTMLImageElement): Promise<{
     tfImg.dispose();
     predictions.dispose();
 
-    // Return probabilities for both classes
+    // Return probabilities for all classes
+    // Model outputs: EC (E.coli), SA (S.Aureus), KP (Klebsiella Pneumonae), Invalid
     return {
-      s_aureus: probabilities[0],
-      e_coli: probabilities[1],
-      invalid: probabilities[2]
+      ec: probabilities[0],
+      sa: probabilities[1], 
+      kp: probabilities[2],
+      invalid: probabilities[3]
     };
   } catch (error) {
     console.error('Error classifying image:', error);
