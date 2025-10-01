@@ -1,4 +1,4 @@
-name: Build and Deploy MERN App (Render + GitHub Pages)
+name: Build MERN App for Render Auto-Deploy
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build_and_deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,14 +27,6 @@ jobs:
       working-directory: ./client
       run: npm run build
 
-    - name: Deploy Client to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v4
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./client/build
-        # (Optional: set cname if using custom domain)
-        # cname: your.custom.domain
-
     - name: Setup Node.js for Server
       uses: actions/setup-node@v3
       with:
@@ -49,10 +41,12 @@ jobs:
       working-directory: ./server
       run: npm run build
 
-    - name: Upload build artifacts (optional)
+    # Optional: Archive build artifacts for reference
+    - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
         name: build-artifacts
         path: |
           client/build
           server/dist
+
